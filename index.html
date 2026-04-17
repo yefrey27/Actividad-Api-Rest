@@ -1,0 +1,163 @@
+// Presentado Por: Yefrey Navarro, Roberto De La Hoz
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ANIMEX — Anime Explorer PRO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cur" id="cur"></div>
+  <div class="cur-dot" id="curDot"></div>
+
+  <!-- HEADER -->
+  <header id="hdr">
+    <div class="hdr-in">
+      <div class="logo"><span class="logo-tri">▶</span><span>ANI<em>MEX</em></span></div>
+      <nav id="nav">
+        <button class="nb active" data-s="search">🔎 Explorar</button>
+        <button class="nb" data-s="top">🏆 Top Anime</button>
+        <button class="nb" data-s="season">📅 Temporada</button>
+        <button class="nb" data-s="stats">📊 Stats</button>
+        <button class="nb" data-s="favs">❤️ Favoritos <span id="fc" class="fc" style="display:none">0</span></button>
+      </nav>
+      <button class="hbtn" id="hbtn"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SEARCH -->
+    <section class="sec active" id="sec-search">
+      <div class="hero">
+        <div class="hero-bg" aria-hidden="true">ANIME</div>
+        <div class="hero-c">
+          <p class="eyebrow"><span class="dot"></span>Datos reales de MyAnimeList</p>
+          <h1 class="htitle">Descubre el<br/><em>universo</em> anime</h1>
+          <p class="hsub">Busca, explora y guarda tus series favoritas</p>
+          <div class="sbox-wrap">
+            <div class="sbox">
+              <span class="sico">⌕</span>
+              <input id="si" class="sinput" type="text" placeholder="Ej: Naruto, One Piece, Death Note…" autocomplete="off" spellcheck="false"/>
+              <button class="sbtn" id="sbtn">BUSCAR</button>
+            </div>
+            <div class="filters">
+              <div class="fg"><label class="fl">Tipo</label>
+                <select class="fs" id="ft">
+                  <option value="">Todos</option><option value="tv">TV</option>
+                  <option value="movie">Película</option><option value="ova">OVA</option>
+                  <option value="special">Special</option><option value="ona">ONA</option>
+                </select>
+              </div>
+              <div class="fg"><label class="fl">Score mín.</label>
+                <select class="fs" id="fsc">
+                  <option value="">Todos</option><option value="9">9+</option>
+                  <option value="8">8+</option><option value="7">7+</option><option value="6">6+</option>
+                </select>
+              </div>
+              <div class="fg"><label class="fl">Ordenar</label>
+                <select class="fs" id="fo">
+                  <option value="">Relevancia</option><option value="score">Score</option>
+                  <option value="popularity">Popularidad</option><option value="start_date">Fecha</option>
+                </select>
+              </div>
+              <button class="cbtn" id="cf">✕ Limpiar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rh" id="rh" style="display:none">
+        <span id="rt">Resultados</span><span class="rc" id="rc"></span>
+      </div>
+      <div class="grid" id="sr"></div>
+      <div class="pag" id="pag" style="display:none">
+        <button class="pbtn" id="pp" disabled>← Anterior</button>
+        <span class="pi" id="pi">Página 1</span>
+        <button class="pbtn" id="np">Siguiente →</button>
+      </div>
+    </section>
+
+    <!-- TOP -->
+    <section class="sec" id="sec-top">
+      <div class="sh">
+        <div><p class="ey">Ranking oficial MyAnimeList</p><h2 class="st">Top <em>Anime</em></h2></div>
+        <select class="fs" id="tf">
+          <option value="">Por score</option>
+          <option value="airing">En emisión</option>
+          <option value="upcoming">Próximos</option>
+          <option value="bypopularity">Por popularidad</option>
+          <option value="favorite">Más en favoritos</option>
+        </select>
+      </div>
+      <div class="grid ranked" id="tr"></div>
+      <div class="lmw"><button class="lmb" id="lm" style="display:none">Cargar más →</button></div>
+    </section>
+
+    <!-- SEASON -->
+    <section class="sec" id="sec-season">
+      <div class="sh">
+        <div><p class="ey">En emisión ahora</p><h2 class="st">Temporada <em>Actual</em></h2></div>
+        <div class="stag" id="stag"></div>
+      </div>
+      <div class="grid" id="seasr"></div>
+    </section>
+
+    <!-- STATS -->
+    <section class="sec" id="sec-stats">
+      <div class="sh">
+        <div><p class="ey">Datos reales — Top 50 MAL</p><h2 class="st">Esta<em>dísticas</em></h2></div>
+        <button class="rbtn" id="rls">↺ Recargar</button>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="kv" id="kAvg">—</div><div class="kl">Score promedio</div></div>
+        <div class="kpi"><div class="kv" id="kMax">—</div><div class="kl">Score más alto</div></div>
+        <div class="kpi"><div class="kv" id="kEps">—</div><div class="kl">Episodios totales</div></div>
+        <div class="kpi"><div class="kv" id="kMem">—</div><div class="kl">Miembros totales</div></div>
+        <div class="kpi"><div class="kv" id="kTV">—</div><div class="kl">Series TV</div></div>
+        <div class="kpi"><div class="kv" id="kMov">—</div><div class="kl">Películas</div></div>
+      </div>
+      <div class="cgrid">
+        <div class="cc"><h3 class="ct">🏆 Top 15 — Score real</h3><div class="cw"><canvas id="cScore"></canvas></div></div>
+        <div class="cc"><h3 class="ct">📊 Distribución por tipo</h3><div class="cw csm"><canvas id="cType"></canvas></div></div>
+        <div class="cc cwide"><h3 class="ct">📺 Top 10 por episodios</h3><div class="cw"><canvas id="cEps"></canvas></div></div>
+        <div class="cc"><h3 class="ct">👥 Top 10 — Miembros MAL</h3><div class="cw"><canvas id="cMem"></canvas></div></div>
+        <div class="cc"><h3 class="ct">⭐ Top 10 — Favoritos MAL</h3><div class="cw csm"><canvas id="cFav"></canvas></div></div>
+        <div class="cc cwide"><h3 class="ct">📅 Score por año de estreno</h3><div class="cw"><canvas id="cYear"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- FAVS -->
+    <section class="sec" id="sec-favs">
+      <div class="sh">
+        <div><p class="ey">Tu colección</p><h2 class="st">Favo<em>ritos</em></h2></div>
+        <button class="cbtn danger" id="clrFavs">🗑 Limpiar todo</button>
+      </div>
+      <div class="empty" id="fempty">
+        <div class="eico">💔</div>
+        <p>Aún no tienes favoritos.<br/>Explora y guarda animes que te gusten.</p>
+        <button class="nb" onclick="goSec('search')">Ir a Explorar</button>
+      </div>
+      <div class="grid" id="favgrid" style="display:none"></div>
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+  <div class="moverlay" id="mov">
+    <div class="modal" id="modal">
+      <button class="mclose" id="mclose">✕</button>
+      <div class="minner" id="minner"></div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+  <script src="app.js"></script>
+</body>
+</html>
